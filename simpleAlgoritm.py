@@ -10,7 +10,6 @@ def neronNetworkProcess( image, pixelSize ):
 		if i >= image.size[0]:
 			ASCIIresult += "\n"
 			i = 0
-		print( characters[ round(x / 3.64) ], x )
 		ASCIIresult += characters[ round( x / 3.64) ] + " "
 		i += 1
 	return ASCIIresult
@@ -24,12 +23,21 @@ except FileNotFoundError:
 	exit()
 
 grayscaledImage = image.convert('L')
-print("Grayscaling complited")
 
 invertedImage = ImageOps.invert(grayscaledImage)
 invertedImage.save("grayscale_image.jpg")
 
-result = neronNetworkProcess(invertedImage, 2)
+width = invertedImage.size[0]
+height = invertedImage.size[1]
+
+maxWidth = eval(input("Input max width of image: "))
+
+if( width > maxWidth ):
+    changer = (width / maxWidth)
+    width = round(width / changer)
+    height = round(height / changer)
+    
+result = neronNetworkProcess(invertedImage.resize( (width, height) ), 2)
 print(result)
 print( "Copied to your clipboard" )
 name = input( "how you want to name this art? " )
