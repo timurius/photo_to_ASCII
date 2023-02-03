@@ -2,19 +2,19 @@ from PIL import Image, ImageOps
 import pyperclip
 
 def neronNetworkProcess( image, pixelSizeH = 2, pixelSizeW = 1 ):
-	characters =  "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.  "
-	allPixelsOfImage = list(image.getdata())	
-	ASCIIresult = ""
+    characters =  "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.  "
+    allPixelsOfImage = list(image.getdata())	
+    ASCIIresult = ""
     h = 0
-	w = 0
-	while h < image.size(1):
-	    if w >= image.size[0]:
-			ASCIIresult += "\n"
-			w = 0
-            h += pixelSizeH
-		ASCIIresult += characters[ round( characters[ image.size[0] * h + w ] / 3.64) ]
-		w += pixelSizeW
-	return ASCIIresult
+    w = 0
+    while True:
+        if ( w >= image.size[0] ):
+            ASCIIresult += "\n"; w = 0; h += pixelSizeH
+        if h >= image.size[1]:
+        	break
+        ASCIIresult += characters[ round( allPixelsOfImage[ image.size[0] * h + w ] / 3.64) ]
+        w += pixelSizeW
+    return ASCIIresult
 	
 
 imagePath = input("Give me the path of your image: ").replace( "\"", "", 2)
@@ -41,8 +41,9 @@ if( width > maxWidth ):
     
 result = neronNetworkProcess(invertedImage.resize( (width, height) ), 2)
 print(result)
-print( "Copied to your clipboard" )
 name = input( "how you want to name this art? " )
-file = open("./arts/"+name+".txt", "w")
-file.write(result)
+if name != "":
+    file = open("./arts/"+name+".txt", "w")
+    file.write(result)
 pyperclip.copy(result)
+print( "Copied to your clipboard" )
