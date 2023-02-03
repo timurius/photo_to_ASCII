@@ -1,17 +1,19 @@
 from PIL import Image, ImageOps
 import pyperclip
 
-def neronNetworkProcess( image, pixelSize ):
+def neronNetworkProcess( image, pixelSizeH = 2, pixelSizeW = 1 ):
 	characters =  "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.  "
-	allPixelsOfImage =  list(image.getdata())	
-	ASCIIresult = "";
-	i = 0
-	for x in allPixelsOfImage:
-		if i >= image.size[0]:
+	allPixelsOfImage = list(image.getdata())	
+	ASCIIresult = ""
+    h = 0
+	w = 0
+	while h < image.size(1):
+	    if w >= image.size[0]:
 			ASCIIresult += "\n"
-			i = 0
-		ASCIIresult += characters[ round( x / 3.64) ] + " "
-		i += 1
+			w = 0
+            h += pixelSizeH
+		ASCIIresult += characters[ round( characters[ image.size[0] * h + w ] / 3.64) ]
+		w += pixelSizeW
 	return ASCIIresult
 	
 
