@@ -12,7 +12,13 @@ def neronNetworkProcess( image, pixelSizeH = 2, pixelSizeW = 1 ):
             ASCIIresult += "\n"; w = 0; h += pixelSizeH
         if h >= image.size[1]:
         	break
-        ASCIIresult += characters[ round( allPixelsOfImage[ image.size[0] * h + w ] / 3.64) ]
+        colors = 0
+        midleColor = 0
+        for i in range( 0, pixelSizeH ):
+            for a in range( 0, pixelSizeW ):
+                colors += allPixelsOfImage[ (h + i) * image.size[ 0 ] + w + a] 
+        midleColor = colors / (pixelSizeW * pixelSizeH)
+        ASCIIresult += characters[ round( midleColor / 3.64) ]
         w += pixelSizeW
     return ASCIIresult
 	
